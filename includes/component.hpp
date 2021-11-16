@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -25,6 +26,7 @@ class Component {
     bool state_;
     size_t evaluate_count_;
     size_t max_inputs_;
+    string name;
 };
 
 class AndGate : public Component {
@@ -37,14 +39,46 @@ class AndGate : public Component {
     void Evaluate() override {
         if (inputs_.empty()) return;
         evaluate_count_++;
-        if (evaluate_count_ == inputs_.size()){
+        if (evaluate_count_ == inputs_.size()) {
             state_ = true;
             for (Component* input : inputs_) {
                 if (!input->GetState()) {
                     state_ = false;
                     break;
                 }
+        if (evaluate_count_ == inputs_.size()) {
+            bool temp = true;
+            for (size_t i = 0; i < inputs_.size(); i++) {
+                temp = temp && inputs_[i]->GetState();
             }
+            for (size_t i = 0; i < outputs_.size(); i++) {
+                outputs_[i]->Evaluate();
+            }
+            evaluate_count_ = 0;
+        }
+
+    }
+
+};
+
+class OrGate : public Component {
+class NandGate : public Component {
+    public:
+    NandGate() {
+        max_inputs_ = 0;
+        state_ = false;
+        evaluate_count_ = 0;
+    }
+    void Evaluate() override {
+        if (inputs_.empty()) return;
+        evaluate_count_++;
+        if (evaluate_count_ == inputs_.size()) {
+            bool temp = true;
+            for (size_t i = 0; i < inputs_.size(); i++) {
+                temp = temp && inputs_[i]->GetState();
+            }
+            if (inputs_.empty()) temp = false;
+            state_ =! temp;
             for (size_t i = 0; i < outputs_.size(); i++) {
                 outputs_[i]->Evaluate();
             }
@@ -72,6 +106,60 @@ class OrGate : public Component {
                     state_ = true;
                     break;
                 }
+        if (evaluate_count_==inputs_.size()) {
+            bool temp = false;
+            for (size_t i = 0; i < inputs_.size(); i++) {
+                temp = temp || inputs_[i]->GetState();
+            }
+            state_ = temp;
+            for (size_t i = 0; i < outputs_.size(); i++) {
+                outputs_[i]->Evaluate();
+            }
+            evaluate_count_ = 0;
+        }
+    }
+};
+
+class NorGate : public Component {
+    public:
+    NorGate() {
+        max_inputs_ = 0;
+        state_ = false;
+        evaluate_count_ = 0;
+    }
+    void Evaluate() override {
+        if (inputs_.empty()) return;
+        evaluate_count_++;
+        if (evaluate_count_ == inputs_.size()) {
+            bool temp = false;
+            for (size_t i = 0; i < inputs_.size(); i++) {
+                temp = temp || inputs_[i]->GetState();
+            }
+            state_ =! temp;
+            for (size_t i = 0; i < outputs_.size(); i++) {
+                outputs_[i]->Evaluate();
+            }
+            evaluate_count_ = 0;
+        }
+    }
+};
+
+class XorGate : public Component {
+    public:
+    XorGate() {
+        max_inputs_ = 0;
+        state_ = false;
+        evaluate_count_ = 0;
+    }
+    void Evaluate() override {
+        if (inputs_.empty()) return;
+        evaluate_count_++;
+        if (evaluate_count_ == inputs_.size()) {
+            bool temp = false;
+            for (size_t i = 0; i < inputs_.size(); i++) {
+                bool st = inputs_[i]->GetState();
+                if (temp && st) temp = false;
+                else temp = temp || st;
             }
             for (size_t i = 0; i < outputs_.size(); i++) {
                 outputs_[i]->Evaluate();
@@ -114,7 +202,22 @@ class Register : public Component {
         void AttachInputs(Component * device) { device=nullptr; }
         void Evaluate() override {
             for (size_t i = 0; i < outputs_.size(); i++) {
+        void AttachInputs(Component * device) = delete;
+        void Evaluate() override {
+            for (size_t i = 0; i < outputs_.size(); i++) {
                 outputs_[i]->Evaluate();
             }
+        }
+};
+
+class Monitor : public Component {
+    public:
+        Monitor() {
+            max_inputs_ = 1;
+            state_ = false;
+            evaluate_count_ = 0;
+        }
+        void Evaluate() override {
+            state_ = inputs_[0]->GetState();
         }
 };
