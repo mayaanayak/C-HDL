@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <map>
 using namespace std;
 
 static string progTitle = "  _____  __    __    __ _____  __ \n / ___/_/ /___/ /_  / // / _ \\/ / \n/ /__/_  __/_  __/ / _  / // / /__\n\\___/ /_/   /_/   /_//_/____/____/";
@@ -12,6 +13,13 @@ static string helpStringB = "\n\nadd <module> <name> - adds a module with the gi
 int main(){
     cout << progTitle << endl << endl;
     cout << "Type 'help' for a list of commands. Type 'exit' to quit." << endl;
+
+    //Handle autoload schematic
+
+    map<string, Component*> registerMap;
+    map<string, Component*> schematicMap;
+    map<string, Component*> monitorMap;
+
     while (true){
         string command;
         cout << "> ";
