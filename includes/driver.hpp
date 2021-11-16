@@ -4,6 +4,6 @@
 
 using namespace std;
 
-enum command{HELP, SAVE, LOAD, ADD, WIRE, UNWIRE, DELETE, LIST, UNKNOWN};
+enum command{ HELP, SAVE, LOAD, ADD, WIRE, UNWIRE, DELETE, LIST, UNKNOWN };
 
 command GetCommand(const string &argument);
