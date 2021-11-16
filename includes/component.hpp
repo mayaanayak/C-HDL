@@ -150,11 +150,6 @@ class XorGate : public Component {
         evaluate_count_++;
         if (evaluate_count_ == inputs_.size()) {
             state_ = false;
-            // for (size_t i = 0; i < inputs_.size(); i++) {
-            //     bool st = inputs_[i]->GetState();
-            //     if (temp && st) temp = false;
-            //     else temp = temp || st;
-            // }
             for (Component* input : inputs_) {
                 state_ ^= input->GetState();
             }
@@ -186,20 +181,20 @@ class NotGate : public Component {
     }
 };
 
-class Register : public Component{
+class Register : public Component {
     public:
-        Register(){
-            max_inputs_=0;
-            state_=false;
-            evaluate_count_=0;
+        Register() {
+            max_inputs_ = 0;
+            state_ = false;
+            evaluate_count_ = 0;
         }
-        void SetState(bool state){
-            state_=state;
+        void SetState(bool state) {
+            state_ = state;
         }
         // you can't do that sam. 
         // void AttachInputs(Component * device) = delete;
-        void Evaluate() override{
-            for (size_t i=0; i<outputs_.size(); i++){
+        void Evaluate() override {
+            for (size_t i = 0; i < outputs_.size(); i++) {
                 outputs_[i]->Evaluate();
             }
         }
