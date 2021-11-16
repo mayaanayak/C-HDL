@@ -38,11 +38,13 @@ class AndGate : public Component{
         if (inputs_.empty()) return;
         evaluate_count_++;
         if (evaluate_count_==inputs_.size()){
-            bool temp = true;
-            for (size_t i=0; i<inputs_.size(); i++){
-                temp && inputs_[i]->GetState();
+            state_ = true;
+            for (Component* input : inputs_) {
+                if (!input->GetState()) {
+                    state_ = false;
+                    break;
+                }
             }
-            state_=temp;
             for (size_t i=0; i<outputs_.size(); i++){
                 outputs_[i]->Evaluate();
             }
@@ -64,11 +66,13 @@ class OrGate : public Component{
         if (inputs_.empty()) return;
         evaluate_count_++;
         if (evaluate_count_==inputs_.size()){
-            bool temp = true;
-            for (size_t i=0; i<inputs_.size(); i++){
-                temp || inputs_[i]->GetState();
+            state_ = false;
+            for (Component* input : inputs_) {
+                if (input->GetState()) {
+                    state_ = true;
+                    break;
+                }
             }
-            state_=temp;
             for (size_t i=0; i<outputs_.size(); i++){
                 outputs_[i]->Evaluate();
             }
