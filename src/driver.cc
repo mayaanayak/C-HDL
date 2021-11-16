@@ -72,6 +72,9 @@ command GetCommand(const string &argument) {
     if (!argument.find("save")) {
         return SAVE;
     }
+    if (!argument.find("list")){
+        return LIST;
+    }
     if (!argument.find("add")) {
         return ADD;
     }
