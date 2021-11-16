@@ -186,7 +186,7 @@ class Register : public Component{
         void SetState(bool state){
             state_=state;
         }
-        void AttachInputs(Component * device) = delete;
+        void AttachInput(Component * device) = delete;
         void Evaluate() override{
             for (size_t i=0; i<outputs_.size(); i++){
                 outputs_[i]->Evaluate();
