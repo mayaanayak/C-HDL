@@ -46,22 +46,16 @@ class AndGate : public Component {
                     state_ = false;
                     break;
                 }
-        if (evaluate_count_ == inputs_.size()) {
-            bool temp = true;
-            for (size_t i = 0; i < inputs_.size(); i++) {
-                temp = temp && inputs_[i]->GetState();
             }
             for (size_t i = 0; i < outputs_.size(); i++) {
                 outputs_[i]->Evaluate();
             }
             evaluate_count_ = 0;
         }
-
     }
 
 };
 
-class OrGate : public Component {
 class NandGate : public Component {
     public:
     NandGate() {
@@ -73,12 +67,14 @@ class NandGate : public Component {
         if (inputs_.empty()) return;
         evaluate_count_++;
         if (evaluate_count_ == inputs_.size()) {
-            bool temp = true;
-            for (size_t i = 0; i < inputs_.size(); i++) {
-                temp = temp && inputs_[i]->GetState();
+            state_ = true;
+            for (Component* input : inputs_) {
+                if (!input->GetState()) {
+                    state_ = false;
+                    break;
+                }
             }
-            if (inputs_.empty()) temp = false;
-            state_ =! temp;
+            state_ = !state_;
             for (size_t i = 0; i < outputs_.size(); i++) {
                 outputs_[i]->Evaluate();
             }
@@ -106,12 +102,7 @@ class OrGate : public Component {
                     state_ = true;
                     break;
                 }
-        if (evaluate_count_==inputs_.size()) {
-            bool temp = false;
-            for (size_t i = 0; i < inputs_.size(); i++) {
-                temp = temp || inputs_[i]->GetState();
             }
-            state_ = temp;
             for (size_t i = 0; i < outputs_.size(); i++) {
                 outputs_[i]->Evaluate();
             }
@@ -131,11 +122,14 @@ class NorGate : public Component {
         if (inputs_.empty()) return;
         evaluate_count_++;
         if (evaluate_count_ == inputs_.size()) {
-            bool temp = false;
-            for (size_t i = 0; i < inputs_.size(); i++) {
-                temp = temp || inputs_[i]->GetState();
+            state_ = false;
+            for (Component* input : inputs_) {
+                if (input->GetState()) {
+                    state_ = true;
+                    break;
+                }
             }
-            state_ =! temp;
+            state_ = !state_;
             for (size_t i = 0; i < outputs_.size(); i++) {
                 outputs_[i]->Evaluate();
             }
@@ -155,11 +149,14 @@ class XorGate : public Component {
         if (inputs_.empty()) return;
         evaluate_count_++;
         if (evaluate_count_ == inputs_.size()) {
-            bool temp = false;
-            for (size_t i = 0; i < inputs_.size(); i++) {
-                bool st = inputs_[i]->GetState();
-                if (temp && st) temp = false;
-                else temp = temp || st;
+            state_ = false;
+            // for (size_t i = 0; i < inputs_.size(); i++) {
+            //     bool st = inputs_[i]->GetState();
+            //     if (temp && st) temp = false;
+            //     else temp = temp || st;
+            // }
+            for (Component* input : inputs_) {
+                state_ ^= input->GetState();
             }
             for (size_t i = 0; i < outputs_.size(); i++) {
                 outputs_[i]->Evaluate();
@@ -189,22 +186,20 @@ class NotGate : public Component {
     }
 };
 
-class Register : public Component {
+class Register : public Component{
     public:
-        Register() {
-            max_inputs_ = 0;
-            state_ = false;
-            evaluate_count_ = 0;
+        Register(){
+            max_inputs_=0;
+            state_=false;
+            evaluate_count_=0;
         }
-        void SetState(bool state) {
-            state_ = state;
+        void SetState(bool state){
+            state_=state;
         }
-        void AttachInputs(Component * device) { device=nullptr; }
-        void Evaluate() override {
-            for (size_t i = 0; i < outputs_.size(); i++) {
-        void AttachInputs(Component * device) = delete;
-        void Evaluate() override {
-            for (size_t i = 0; i < outputs_.size(); i++) {
+        // you can't do that sam. 
+        // void AttachInputs(Component * device) = delete;
+        void Evaluate() override{
+            for (size_t i=0; i<outputs_.size(); i++){
                 outputs_[i]->Evaluate();
             }
         }
