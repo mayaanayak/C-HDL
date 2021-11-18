@@ -93,18 +93,18 @@ command GetCommand(const string &argument) {
     return UNKNOWN;
 }
 
-void Add(std::string& first_arg, std::string& second_arg, std::string& third_arg) {
-    if (first_arg != "add") throw std::invalid_argument("First argument should be 'add'");
-    std::vector<std::string> extended_modules {"and", "or", "not", "nor", "nand", "xor", "register", "monitor"};
-    if (std::find(extended_modules.begin(), extended_modules.end(), second_arg) == extended_modules.end()) {
-        throw std::invalid_argument("Second argument should be a module");
+void Add(string& first_arg, string& second_arg, string& third_arg) {
+    if (first_arg != "add") throw invalid_argument("First argument should be 'add'");
+    vector<string> extended_modules {"and", "or", "not", "nor", "nand", "xor", "register", "monitor"};
+    if (find(extended_modules.begin(), extended_modules.end(), second_arg) == extended_modules.end()) {
+        throw invalid_argument("Second argument should be a module");
     }
     if (!IsInMap(second_arg, third_arg)) {
         AddToMap(second_arg, third_arg);
     }
 }
 
-bool IsInMap(std::string& extended_module, std::string& name) {
+bool IsInMap(string& extended_module, string& name) {
     if (extended_module == "register") {
         return !(register_map.find(name) == register_map.end());
     }
@@ -114,7 +114,7 @@ bool IsInMap(std::string& extended_module, std::string& name) {
     return !(schematic_map.find(name) == schematic_map.end());
 }
 
-void AddToMap(std::string& extended_module, std::string& name) {
+void AddToMap(string& extended_module, string& name) {
     if (extended_module == "register") {
         auto* to_add = new Register();
         register_map[name] = to_add;
