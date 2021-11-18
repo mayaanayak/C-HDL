@@ -20,21 +20,30 @@ class Component {
             device->outputs_.push_back(this);
         }
     }
+    string& getGateName(){
+        return gateType;
+    }
+    string& getName(){
+        return name_;
+    }
     protected:
     vector<Component*> inputs_;
     vector<Component*> outputs_;
     bool state_;
     size_t evaluate_count_;
     size_t max_inputs_;
-    string name;
+    string name_;
+    string gateType;
 };
 
 class AndGate : public Component {
     public:
-    AndGate() {
+    AndGate(string name) {
         max_inputs_ = 0;
         state_ = false;
         evaluate_count_ = 0;
+        gateType = "and";
+        name_=name;
     }
     void Evaluate() override {
         if (inputs_.empty()) return;
@@ -58,10 +67,12 @@ class AndGate : public Component {
 
 class NandGate : public Component {
     public:
-    NandGate() {
+    NandGate(string name) {
         max_inputs_ = 0;
         state_ = false;
         evaluate_count_ = 0;
+        gateType = "nand";
+        name_=name;
     }
     void Evaluate() override {
         if (inputs_.empty()) return;
@@ -87,10 +98,12 @@ class NandGate : public Component {
 
 class OrGate : public Component {
     public:
-    OrGate() {
+    OrGate(string name) {
         max_inputs_ = 0;
         state_ = false;
         evaluate_count_ = 0;
+        gateType = "or";
+        name_=name;
     }
     void Evaluate() override {
         if (inputs_.empty()) return;
@@ -113,10 +126,12 @@ class OrGate : public Component {
 
 class NorGate : public Component {
     public:
-    NorGate() {
+    NorGate(string name) {
         max_inputs_ = 0;
         state_ = false;
         evaluate_count_ = 0;
+        gateType = "nor";
+        name_=name;
     }
     void Evaluate() override {
         if (inputs_.empty()) return;
@@ -140,10 +155,12 @@ class NorGate : public Component {
 
 class XorGate : public Component {
     public:
-    XorGate() {
+    XorGate(string name) {
         max_inputs_ = 0;
         state_ = false;
         evaluate_count_ = 0;
+        gateType = "xor";
+        name_=name;
     }
     void Evaluate() override {
         if (inputs_.empty()) return;
@@ -163,10 +180,12 @@ class XorGate : public Component {
 
 class NotGate : public Component {
     public:
-    NotGate() {
+    NotGate(string name) {
         max_inputs_ = 1;
         state_ = false;
         evaluate_count_ = 0;
+        gateType = "not";
+        name_=name;
     }
     void Evaluate() override {
         if (inputs_.empty()) return;
@@ -183,10 +202,11 @@ class NotGate : public Component {
 
 class Register : public Component {
     public:
-        Register() {
+        Register(string name) {
             max_inputs_ = 0;
             state_ = false;
             evaluate_count_ = 0;
+            name_=name;
         }
         void SetState(bool state) {
             state_ = state;
@@ -201,10 +221,11 @@ class Register : public Component {
 
 class Monitor : public Component {
     public:
-        Monitor() {
+        Monitor(string name) {
             max_inputs_ = 1;
             state_ = false;
             evaluate_count_ = 0;
+            name_=name;
         }
         void Evaluate() override {
             state_ = inputs_[0]->GetState();
