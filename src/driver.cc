@@ -53,6 +53,10 @@ int main(){
                 cout << helpStringA<<helpStringB << endl;
                 break;
             case ADD:
+                if (arguments.size()<3){
+                    cout<<"Missing Module type or Name"<<endl;
+                    break;
+                }
                 Add(arguments[1], arguments[2]);
                 break;
             case LIST:
@@ -61,6 +65,13 @@ int main(){
                 List(arg);
                 break;
             }
+            case DELETE:
+                if (arguments.size()<3){
+                    cout<<"Missing Module type or Name"<<endl;
+                    break;
+                }
+                Delete(arguments[1],arguments[2]);
+                break;
             case UNKNOWN:
                 cout << "Unknown Command." << endl;
                 break;
@@ -111,6 +122,9 @@ void Delete(string& module, string& name) {
     }
     if (IsInMap(module, name)) {
         DeleteFromMap(module, name);
+        cout<<"Deleted \""<<name<<"\""<<endl;
+    } else{
+        cout<<"Module \""<<name<<"\" does not exist"<<endl;
     }
 }
 
@@ -131,6 +145,8 @@ void Add(string& module, string& name) {
     }
     if (!IsInMap(module, name)) {
         AddToMap(module, name);
+    } else{
+        cout<<"Module \""<<name<<"\" already exists"<<endl;
     }
 }
 
@@ -174,7 +190,7 @@ bool IsInMap(string& module, string& name) {
 
 bool IsAModule(string& potential_module) {
     vector<string> extended_modules {"and", "or", "not", "nor", "nand", "xor", "register", "monitor"};
-    return find(extended_modules.begin(), extended_modules.end(), potential_module) == extended_modules.end();
+    return find(extended_modules.begin(), extended_modules.end(), potential_module) != extended_modules.end();
 }
 
 void List(string& module_type){
