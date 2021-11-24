@@ -9,8 +9,13 @@ enum command{ HELP, SAVE, LOAD, ADD, WIRE, UNWIRE, DELETE, LIST, UNKNOWN };
 
 command GetCommand(const string &argument);
 
-void Add(string& second_arg, string& third_arg);
-bool IsInMap(string& extended_module, string& name);
-void AddToMap(string& extended_module, string& name);
+bool IsInMap(string& module, string& name);
+bool IsAModule(string& potential_module);
+
+void Add(string& module, string& name);
+void AddToMap(string& module, string& name);
+
+void Delete(string& module, string& name);
+void DeleteFromMap(string& module, string& name);
 
 void List(string& module_type);

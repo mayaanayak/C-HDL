@@ -11,7 +11,7 @@ using namespace std;
 
 static string progTitle = "  _____  __    __    __ _____  __ \n / ___/_/ /___/ /_  / // / _ \\/ / \n/ /__/_  __/_  __/ / _  / // / /__\n\\___/ /_/   /_/   /_//_/____/____/";
 static string helpStringA = "help - prints this\nexit - terminates program\nsave <filename> - saves schematic to local directory\nload <filename> - loads schematic from local directory (clears any unsaved work!)";
-static string helpStringB = "\n\nadd <module> <name> - adds a module with the given name\ndelete <name> - removes a module with the given name\nwire <src> <dest> - connects source module to destination module\nunwire <src> <dest> - removes connection from source module to destination module, if one exists\nlist [registers/modules/monitors/all] - lists the created modules";
+static string helpStringB = "\n\nadd <module> <name> - adds a module with the given name\ndelete <module> <name> - removes a module with the given name\nwire <src> <dest> - connects source module to destination module\nunwire <src> <dest> - removes connection from source module to destination module, if one exists\nlist [registers/modules/monitors/all] - lists the created modules";
 
 map<string, Component*> register_map;
 map<string, Component*> schematic_map;
@@ -105,53 +105,76 @@ command GetCommand(const string &argument) {
     return UNKNOWN;
 }
 
-void Add(string& second_arg, string& third_arg) {
-    vector<string> extended_modules {"and", "or", "not", "nor", "nand", "xor", "register", "monitor"};
-    if (find(extended_modules.begin(), extended_modules.end(), second_arg) == extended_modules.end()) {
+void Delete(string& module, string& name) {
+    if (!IsAModule(module)) {
+        cout<<"Second argument should be a module"<<endl;
+    }
+    if (IsInMap(module, name)) {
+        DeleteFromMap(module, name);
+    }
+}
+
+void DeleteFromMap(string& module, string& name) {
+    if (module == "register") {
+        register_map.erase(name);
+    } else if (module == "monitor") {
+        monitor_map.erase(name);
+    } else {
+        schematic_map.erase(name);
+    }
+}
+
+void Add(string& module, string& name) {
+    if (!IsAModule(module)) {
        cout<<"Second argument should be a module"<<endl;
        return;
     }
-    if (!IsInMap(second_arg, third_arg)) {
-        AddToMap(second_arg, third_arg);
+    if (!IsInMap(module, name)) {
+        AddToMap(module, name);
     }
 }
 
-bool IsInMap(string& extended_module, string& name) {
-    if (extended_module == "register") {
-        return !(register_map.find(name) == register_map.end());
-    }
-    if (extended_module == "monitor") {
-        return !(monitor_map.find(name) == monitor_map.end());
-    }
-    return !(schematic_map.find(name) == schematic_map.end());
-}
-
-void AddToMap(string& extended_module, string& name) {
-    if (extended_module == "register") {
+void AddToMap(string& module, string& name) {
+    if (module == "register") {
         auto* to_add = new Register(name);
         register_map[name] = to_add;
         return;
     }
-    if (extended_module == "monitor") {
+    if (module == "monitor") {
         auto* to_add = new Monitor(name);
         monitor_map[name] = to_add;
         return;
     }
     Component* to_add;
-    if (extended_module == "and") {
+    if (module == "and") {
         to_add = new AndGate(name);
-    } else if (extended_module == "or") {
+    } else if (module == "or") {
         to_add = new OrGate(name);
-    } else if (extended_module == "not") {
+    } else if (module == "not") {
         to_add = new NotGate(name);
-    } else if (extended_module == "nor") {
+    } else if (module == "nor") {
         to_add = new NorGate(name);
-    } else if (extended_module == "nand") {
+    } else if (module == "nand") {
         to_add = new NandGate(name);
     } else {
         to_add = new XorGate(name);
     }
     schematic_map[name] = to_add;
+}
+
+bool IsInMap(string& module, string& name) {
+    if (module == "register") {
+        return !(register_map.find(name) == register_map.end());
+    }
+    if (module == "monitor") {
+        return !(monitor_map.find(name) == monitor_map.end());
+    }
+    return !(schematic_map.find(name) == schematic_map.end());
+}
+
+bool IsAModule(string& potential_module) {
+    vector<string> extended_modules {"and", "or", "not", "nor", "nand", "xor", "register", "monitor"};
+    return find(extended_modules.begin(), extended_modules.end(), potential_module) == extended_modules.end();
 }
 
 void List(string& module_type){
