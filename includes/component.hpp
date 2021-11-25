@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -19,6 +20,19 @@ class Component {
             inputs_.push_back(device);
             device->outputs_.push_back(this);
         }
+    }
+    bool RemoveInput(Component* device){
+        if (!inputs_.empty()){
+            auto it = find(inputs_.begin(), inputs_.end(), device);
+            if (it==inputs_.end()){
+                return false;
+            }
+            inputs_.erase(it);
+            auto reit = find(device->outputs_.begin(), device->outputs_.end(), this);
+            device->outputs_.erase(reit);
+            return true;
+        }
+        return false;
     }
     string& getGateName(){
         return gateType;

@@ -72,6 +72,23 @@ int main(){
                 }
                 Delete(arguments[1],arguments[2]);
                 break;
+            case WIRE:
+                if (arguments.size()<3){
+                    cout<<"Missing module names"<<endl;
+                    break;
+                }
+                Wire(arguments[1], arguments[2]);
+                break;
+            case UNWIRE:
+                if (arguments.size()<3){
+                    cout<<"missing module names"<<endl;
+                    break;
+                }
+                Unwire(arguments[1], arguments[2]);
+                break;
+            case RUN:
+                Simulate(arguments);
+                break;
             case UNKNOWN:
                 cout << "Unknown Command." << endl;
                 break;
@@ -112,6 +129,9 @@ command GetCommand(const string &argument) {
     }
     if (!argument.find("delete")) {
         return DELETE;
+    }
+    if (!argument.find("run")){
+        return RUN;
     }
     return UNKNOWN;
 }
@@ -223,4 +243,99 @@ void List(string& module_type){
             cout<<it->first<<endl;
         }
     }
+}
+
+void Wire(string& from, string& to){
+    string m = "monitor";
+    string r = "register";
+    Component* fromptr = nullptr;
+    Component* toptr = nullptr;
+    if (IsInMap(m, from)){
+        cout<<"Can't connect monitors to other modules"<<endl;
+        return;
+    } 
+    if (IsInMap(r,from)){
+        fromptr = register_map.find(from)->second;
+    } else{
+        auto it = schematic_map.find(from);
+        if (it==schematic_map.end()){
+            cout<<"Module does not exist"<<endl;
+            return;
+        }
+        fromptr = it->second;
+    }
+    if (IsInMap(r, to)){
+        cout<<"Can't connect other modules to registers"<<endl;
+        return;
+    }
+    if (IsInMap(m, to)){
+        toptr = monitor_map.find(to)->second;
+    } else{
+        auto it = schematic_map.find(to);
+        if (it==schematic_map.end()){
+            cout<<"Module does not exist"<<endl;
+            return;
+        }
+        toptr = it->second;
+    }
+    toptr->AttachInput(fromptr);
+}
+void Unwire(string& from, string& to){
+    string m = "monitor";
+    string r = "register";
+    Component* fromptr = nullptr;
+    Component* toptr = nullptr;
+    if (IsInMap(m, from)){
+        cout<<"Wire shouldn't exist"<<endl;
+        return;
+    } 
+    if (IsInMap(r,from)){
+        fromptr = register_map.find(from)->second;
+    } else{
+        auto it = schematic_map.find(from);
+        if (it==schematic_map.end()){
+            cout<<"Module does not exist"<<endl;
+            return;
+        }
+        fromptr = it->second;
+    }
+    if (IsInMap(r, to)){
+        cout<<"Wire shouldn't exist"<<endl;
+        return;
+    }
+    if (IsInMap(m, to)){
+        toptr = monitor_map.find(to)->second;
+    } else{
+        auto it = schematic_map.find(to);
+        if (it==schematic_map.end()){
+            cout<<"Module does not exist"<<endl;
+            return;
+        }
+        toptr = it->second;
+    }
+    if(!(toptr->RemoveInput(fromptr))){
+        cout<<"No wire existed"<<endl;
+    }
+}
+
+void Simulate(vector<string>& args){
+    if (args.size()%2==0){
+        cout<<"Missing states"<<endl;
+        return;
+    }
+    for (auto reg : register_map){
+        ((Register*)reg.second)->SetState(false);
+    }
+    for (size_t i=1; i<args.size(); i+=2){
+        auto reg = register_map.find(args[i]);
+        bool x = stoi(args[i+1]);
+        ((Register*)reg->second)->SetState(x);
+    }
+    for (auto reg : register_map){
+        ((Register*)reg.second)->Evaluate();
+    }
+    for (auto mon : monitor_map){
+        cout<<mon.second->getName()<<" "<<mon.second->GetState()<<endl;
+    }
+    return;
 }
