@@ -7,6 +7,8 @@
 #include <map>
 #include <stdexcept>
 #include <algorithm>
+#include <fstream>
+#include <ostream>
 using namespace std;
 
 static string progTitle = "  _____  __    __    __ _____  __ \n / ___/_/ /___/ /_  / // / _ \\/ / \n/ /__/_  __/_  __/ / _  / // / /__\n\\___/ /_/   /_/   /_//_/____/____/";
@@ -134,6 +136,55 @@ command GetCommand(const string &argument) {
         return RUN;
     }
     return UNKNOWN;
+}
+
+void ToNewFile(const string& file_name) {
+    ofstream ofs{file_name};
+    ofs << "Registers: " << KeysToString(register_map) << "\n";
+    ofs << SchematicKeysToString();
+    ofs << "Monitors: " << KeysToString(monitor_map) << "\n";
+}
+
+string SchematicKeysToString() {
+    string schematic_string;
+    vector<string> and_names, nand_names, or_names, nor_names, xor_names, not_names;
+    for (auto const& component : schematic_map) {
+        if (dynamic_cast<AndGate*>(component.second) != nullptr) {
+            and_names.push_back(component.first);
+        } else if (dynamic_cast<NandGate*>(component.second) != nullptr) {
+            nand_names.push_back(component.first);
+        } else if (dynamic_cast<OrGate*>(component.second) != nullptr) {
+            or_names.push_back(component.first);
+        } else if (dynamic_cast<NorGate*>(component.second) != nullptr) {
+            nor_names.push_back(component.first);
+        } else if (dynamic_cast<XorGate*>(component.second) != nullptr) {
+            xor_names.push_back(component.first);
+        } else {
+            not_names.push_back(component.first);
+        }
+    }
+    schematic_string += "And: " + PrintVector(and_names) + "\n";
+    schematic_string += "Nand: " + PrintVector(nand_names) + "\n";
+    schematic_string += "Or: " + PrintVector(or_names) + "\n";
+    schematic_string += "Nor: " + PrintVector(nor_names) + "\n";
+    schematic_string += "Xor: " + PrintVector(xor_names) + "\n";
+    schematic_string += "Not: " + PrintVector(not_names) + "\n";
+    return schematic_string;
+}
+
+string PrintVector(const vector<string>& vector) {
+    string vector_string;
+    for (string str : vector) vector_string += str + " ";
+    return vector_string;
+}
+
+string KeysToString(const map<string, Component*>& kMap) {
+    string keys;
+    for (auto const& key_and_value : kMap) {
+        string key = key_and_value.first;
+        keys += key + " ";
+    }
+    return keys;
 }
 
 void Delete(string& module, string& name) {
@@ -280,6 +331,7 @@ void Wire(string& from, string& to){
     }
     toptr->AttachInput(fromptr);
 }
+
 void Unwire(string& from, string& to){
     string m = "monitor";
     string r = "register";

@@ -1,4 +1,6 @@
 #pragma once
+#include "component.hpp"
+#include <map>
 #include <string>
 #include <vector>
 
@@ -8,6 +10,11 @@ enum command{ HELP, SAVE, LOAD, ADD, WIRE, UNWIRE, DELETE, LIST, RUN, UNKNOWN };
 //and, or, not, nor, nand, xor, register, monitor
 
 command GetCommand(const string &argument);
+
+void ToNewFile(const string& file_name);
+string KeysToString(const map<string, Component*>& kMap);
+string SchematicKeysToString();
+string PrintVector(const vector<string>& vector);
 
 bool IsInMap(string& module, string& name);
 bool IsAModule(string& potential_module);
