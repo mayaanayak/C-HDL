@@ -34,10 +34,10 @@ class Component {
         }
         return false;
     }
-    string& getGateName(){
+    string& GetGateName(){
         return gateType;
     }
-    string& getName(){
+    string& GetName(){
         return name_;
     }
     protected:

@@ -149,15 +149,16 @@ string SchematicKeysToString() {
     string schematic_string;
     vector<string> and_names, nand_names, or_names, nor_names, xor_names, not_names;
     for (auto const& component : schematic_map) {
-        if (dynamic_cast<AndGate*>(component.second) != nullptr) {
+        string gate_type = component.second ->GetGateName();
+        if (gate_type == "and") {
             and_names.push_back(component.first);
-        } else if (dynamic_cast<NandGate*>(component.second) != nullptr) {
+        } else if (gate_type == "nand") {
             nand_names.push_back(component.first);
-        } else if (dynamic_cast<OrGate*>(component.second) != nullptr) {
+        } else if (gate_type == "or") {
             or_names.push_back(component.first);
-        } else if (dynamic_cast<NorGate*>(component.second) != nullptr) {
+        } else if (gate_type == "nor") {
             nor_names.push_back(component.first);
-        } else if (dynamic_cast<XorGate*>(component.second) != nullptr) {
+        } else if (gate_type == "xor") {
             xor_names.push_back(component.first);
         } else {
             not_names.push_back(component.first);
