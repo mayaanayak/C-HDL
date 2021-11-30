@@ -156,6 +156,14 @@ string ConnectionsToString() {
         }
         connection_string += "\n";
     }
+    for (auto const& component : monitor_map) {
+        connection_string += component.second -> GetName() + ": ";
+        vector<Component*> inputs = component.second -> GetInputs();
+        for (auto const& component : inputs) {
+            connection_string += component -> GetName() + " ";
+        }
+        connection_string += "\n";
+    }
     return connection_string;
 }
 
