@@ -15,6 +15,7 @@ class Component {
     }
     void virtual Evaluate() = 0;
     bool GetState() { return state_; }
+    vector<Component*> GetInputs() { return inputs_; }
     void AttachInput(Component* device) {
         if (max_inputs_ == 0 || inputs_.size() < max_inputs_) {
             inputs_.push_back(device);

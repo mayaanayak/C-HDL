@@ -143,6 +143,20 @@ void ToNewFile(const string& file_name) {
     ofs << "Registers: " << KeysToString(register_map) << "\n";
     ofs << SchematicKeysToString();
     ofs << "Monitors: " << KeysToString(monitor_map) << "\n";
+    ofs << ConnectionsToString();
+}
+
+string ConnectionsToString() {
+    string connection_string;
+    for (auto const& component : schematic_map) {
+        connection_string += component.second -> GetName() + ": ";
+        vector<Component*> inputs = component.second -> GetInputs();
+        for (auto const& component : inputs) {
+            connection_string += component -> GetName() + " ";
+        }
+        connection_string += "\n";
+    }
+    return connection_string;
 }
 
 string SchematicKeysToString() {
@@ -286,7 +300,7 @@ void List(string& module_type){
     if (mod){
         cout<<"-- Modules -----"<<endl;
         for (auto it = schematic_map.begin(); it!=schematic_map.end(); it++){
-            cout<<it->first<< " - "<<it->second->getGateName()<<endl;
+            cout<<it->first<< " - "<<it->second->GetGateName()<<endl;
         }
     }
     if (mon){
@@ -388,7 +402,6 @@ void Simulate(vector<string>& args){
         ((Register*)reg.second)->Evaluate();
     }
     for (auto mon : monitor_map){
-        cout<<mon.second->getName()<<" "<<mon.second->GetState()<<endl;
+        cout<<mon.second->GetName()<<" "<<mon.second->GetState()<<endl;
     }
-    return;
 }
