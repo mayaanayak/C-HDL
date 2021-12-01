@@ -49,18 +49,18 @@ void ToNewFile(const string& file_name) {
 string ConnectionsToString() {
     string connection_string;
     for (auto const& component : schematic_map) {
-        connection_string += component.second -> GetName() + ": ";
-        vector<Component*> inputs = component.second -> GetInputs();
+        connection_string += component.second->GetName() + ": ";
+        vector<Component*> inputs = component.second->GetInputs();
         for (auto const& component : inputs) {
-            connection_string += component -> GetName() + " ";
+            connection_string += component->GetName() + " ";
         }
         connection_string += "\n";
     }
     for (auto const& component : monitor_map) {
-        connection_string += component.second -> GetName() + ": ";
-        vector<Component*> inputs = component.second -> GetInputs();
+        connection_string += component.second->GetName() + ": ";
+        vector<Component*> inputs = component.second->GetInputs();
         for (auto const& component : inputs) {
-            connection_string += component -> GetName() + " ";
+            connection_string += component->GetName() + " ";
         }
         connection_string += "\n";
     }
@@ -80,7 +80,7 @@ string SchematicKeysToString() {
     string schematic_string;
     vector<string> and_names, nand_names, or_names, nor_names, xor_names, not_names;
     for (auto const& component : schematic_map) {
-        string gate_type = component.second ->GetGateName();
+        string gate_type = component.second->GetGateName();
         if (gate_type == "and") {
             and_names.push_back(component.first);
         } else if (gate_type == "nand") {
@@ -127,13 +127,13 @@ bool IsAModule(string& potential_module) {
 
 void Add(string& module, string& name) {
     if (!IsAModule(module)) {
-       cout<<"Second argument should be a module"<<endl;
+       cout << "Second argument should be a module" << endl;
        return;
     }
     if (!IsInMap(module, name)) {
         AddToMap(module, name);
     } else{
-        cout<<"Module \""<<name<<"\" already exists"<<endl;
+        cout << "Module \"" << name << "\" already exists" << endl;
     }
 }
 
@@ -167,13 +167,13 @@ void AddToMap(string& module, string& name) {
 
 void Delete(string& module, string& name) {
     if (!IsAModule(module)) {
-        cout<<"Second argument should be a module"<<endl;
+        cout << "Second argument should be a module" << endl;
     }
     if (IsInMap(module, name)) {
         DeleteFromMap(module, name);
-        cout<<"Deleted \""<<name<<"\""<<endl;
+        cout << "Deleted \"" << name << "\"" << endl;
     } else{
-        cout<<"Module \""<<name<<"\" does not exist"<<endl;
+        cout << "Module \"" << name << "\" does not exist" << endl;
     }
 }
 
@@ -187,35 +187,35 @@ void DeleteFromMap(string& module, string& name) {
     }
 }
 
-void Wire(string& from, string& to){
+void Wire(string& from, string& to) {
     string m = "monitor";
     string r = "register";
     Component* fromptr = nullptr;
     Component* toptr = nullptr;
-    if (IsInMap(m, from)){
-        cout<<"Can't connect monitors to other modules"<<endl;
+    if (IsInMap(m, from)) {
+        cout << "Can't connect monitors to other modules" << endl;
         return;
     } 
-    if (IsInMap(r,from)){
+    if (IsInMap(r,from)) {
         fromptr = register_map.find(from)->second;
-    } else{
+    } else {
         auto it = schematic_map.find(from);
-        if (it==schematic_map.end()){
-            cout<<"Module does not exist"<<endl;
+        if (it == schematic_map.end()) {
+            cout << "Module does not exist" << endl;
             return;
         }
         fromptr = it->second;
     }
-    if (IsInMap(r, to)){
-        cout<<"Can't connect other modules to registers"<<endl;
+    if (IsInMap(r, to)) {
+        cout << "Can't connect other modules to registers" << endl;
         return;
     }
-    if (IsInMap(m, to)){
+    if (IsInMap(m, to)) {
         toptr = monitor_map.find(to)->second;
-    } else{
+    } else {
         auto it = schematic_map.find(to);
-        if (it==schematic_map.end()){
-            cout<<"Module does not exist"<<endl;
+        if (it == schematic_map.end()){
+            cout << "Module does not exist" << endl;
             return;
         }
         toptr = it->second;
@@ -223,93 +223,93 @@ void Wire(string& from, string& to){
     toptr->AttachInput(fromptr);
 }
 
-void Unwire(string& from, string& to){
+void Unwire(string& from, string& to) {
     string m = "monitor";
     string r = "register";
     Component* fromptr = nullptr;
     Component* toptr = nullptr;
     if (IsInMap(m, from)){
-        cout<<"Wire shouldn't exist"<<endl;
+        cout << "Wire shouldn't exist" << endl;
         return;
     } 
-    if (IsInMap(r,from)){
+    if (IsInMap(r,from)) {
         fromptr = register_map.find(from)->second;
-    } else{
+    } else {
         auto it = schematic_map.find(from);
-        if (it==schematic_map.end()){
-            cout<<"Module does not exist"<<endl;
+        if (it == schematic_map.end()){
+            cout << "Module does not exist" << endl;
             return;
         }
         fromptr = it->second;
     }
-    if (IsInMap(r, to)){
-        cout<<"Wire shouldn't exist"<<endl;
+    if (IsInMap(r, to)) {
+        cout << "Wire shouldn't exist" << endl;
         return;
     }
-    if (IsInMap(m, to)){
+    if (IsInMap(m, to)) {
         toptr = monitor_map.find(to)->second;
-    } else{
+    } else {
         auto it = schematic_map.find(to);
-        if (it==schematic_map.end()){
-            cout<<"Module does not exist"<<endl;
+        if (it == schematic_map.end()){
+            cout << "Module does not exist" << endl;
             return;
         }
         toptr = it->second;
     }
-    if(!(toptr->RemoveInput(fromptr))){
-        cout<<"No wire existed"<<endl;
+    if(!(toptr->RemoveInput(fromptr))) {
+        cout << "No wire existed" << endl;
     }
 }
 
-void List(string& module_type){
+void List(string& module_type) {
     bool reg=true,mod=true,mon=true;
-    if (module_type=="registers"){
+    if (module_type == "registers") {
         mod=false; mon=false;
-    } else if (module_type=="modules"){
+    } else if (module_type == "modules") {
         reg=false; mon=false;
-    } else if (module_type=="monitors"){
+    } else if (module_type == "monitors") {
         reg=false; mod=false;
-    } else if (module_type!="" && module_type!="all"){
-        cout<<"Unknown Component Group"<<endl;
+    } else if (module_type != "" && module_type != "all") {
+        cout << "Unknown Component Group" << endl;
         return;
     }
-    if (reg){
-        cout<<"-- Registers ---"<<endl;
-        for (auto it = register_map.begin(); it!=register_map.end(); it++){
-            cout<<it->first<<endl;
+    if (reg) {
+        cout << "-- Registers ---" << endl;
+        for (auto it = register_map.begin(); it != register_map.end(); it++){
+            cout << it->first << endl;
         }
     }
-    if (mod){
-        cout<<"-- Modules -----"<<endl;
-        for (auto it = schematic_map.begin(); it!=schematic_map.end(); it++){
-            cout<<it->first<< " - "<<it->second->GetGateName()<<endl;
+    if (mod) {
+        cout << "-- Modules -----" << endl;
+        for (auto it = schematic_map.begin(); it != schematic_map.end(); it++) {
+            cout << it->first << " - " << it->second->GetGateName() << endl;
         }
     }
-    if (mon){
-        cout<<"-- Monitors ----"<<endl;
-        for (auto it = monitor_map.begin(); it!=monitor_map.end(); it++){
-            cout<<it->first<<endl;
+    if (mon) {
+        cout << "-- Monitors ----" << endl;
+        for (auto it = monitor_map.begin(); it != monitor_map.end(); it++){
+            cout << it->first << endl;
         }
     }
 }
 
-void Simulate(vector<string>& args){
-    if (args.size()%2==0){
-        cout<<"Missing states"<<endl;
+void Simulate(vector<string>& args) {
+    if (args.size() % 2 == 0){
+        cout << "Missing states" << endl;
         return;
     }
-    for (auto reg : register_map){
+    for (auto reg : register_map) {
         ((Register*)reg.second)->SetState(false);
     }
-    for (size_t i=1; i<args.size(); i+=2){
+    for (size_t i = 1; i < args.size(); i += 2) {
         auto reg = register_map.find(args[i]);
-        bool x = stoi(args[i+1]);
+        bool x = stoi(args[i + 1]);
         ((Register*)reg->second)->SetState(x);
     }
-    for (auto reg : register_map){
+    for (auto reg : register_map) {
         ((Register*)reg.second)->Evaluate();
     }
-    for (auto mon : monitor_map){
-        cout<<mon.second->GetName()<<" "<<mon.second->GetState()<<endl;
+    for (auto mon : monitor_map) {
+        cout << mon.second->GetName() << " " << mon.second->GetState() << endl;
     }
 }

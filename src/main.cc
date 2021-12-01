@@ -9,7 +9,7 @@ static string progTitle = "  _____  __    __    __ _____  __ \n / ___/_/ /___/ /
 static string helpStringA = "help - prints this\nexit - terminates program\nsave <filename> - saves schematic to local directory\nload <filename> - loads schematic from local directory (clears any unsaved work!)";
 static string helpStringB = "\n\nadd <module> <name> - adds a module with the given name\ndelete <module> <name> - removes a module with the given name\nwire <src> <dest> - connects source module to destination module\nunwire <src> <dest> - removes connection from source module to destination module, if one exists\nlist [registers/modules/monitors/all] - lists the created modules";
 
-int main(){
+int main() {
     cout << progTitle << endl << endl;
     cout << "Type 'help' for a list of commands. Type 'exit' to quit." << endl;
 
@@ -27,7 +27,7 @@ int main(){
     
     //Handle autoload schematic
 
-    while (true){
+    while (true) {
         
         string command;
         cout << "> ";
@@ -42,11 +42,11 @@ int main(){
 
         switch(com){
             case HELP:
-                cout << helpStringA<<helpStringB << endl;
+                cout << helpStringA << helpStringB << endl;
                 break;
             case ADD:
-                if (arguments.size()<3){
-                    cout<<"Missing Module type or Name"<<endl;
+                if (arguments.size()<3) {
+                    cout << "Missing Module type or Name" << endl;
                     break;
                 }
                 Add(arguments[1], arguments[2]);
@@ -58,22 +58,22 @@ int main(){
                 break;
             }
             case DELETE:
-                if (arguments.size()<3){
-                    cout<<"Missing Module type or Name"<<endl;
+                if (arguments.size()<3) {
+                    cout << "Missing Module type or Name" << endl;
                     break;
                 }
                 Delete(arguments[1],arguments[2]);
                 break;
             case WIRE:
-                if (arguments.size()<3){
-                    cout<<"Missing module names"<<endl;
+                if (arguments.size()<3) {
+                    cout << "Missing module names" << endl;
                     break;
                 }
                 Wire(arguments[1], arguments[2]);
                 break;
             case UNWIRE:
-                if (arguments.size()<3){
-                    cout<<"missing module names"<<endl;
+                if (arguments.size()<3) {
+                    cout << "missing module names" << endl;
                     break;
                 }
                 Unwire(arguments[1], arguments[2]);
