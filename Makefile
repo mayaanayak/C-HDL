@@ -6,7 +6,7 @@ CXXFLAGS=-std=c++20 -g -fstandalone-debug
 exec: bin/exec
 #tests: bin/tests
 
-bin/exec: ./src/driver.cc
+bin/exec: ./src/main.cc ./src/command.cc
 	$(CXX) $(CXXFLAGS) $(CXXEXTRAS) $(INCLUDES) $^ -o $@
 
 #bin/tests: ./tests/tests.cc obj/catch.o obj/cs128string.o ./src/branched-linked-list.cc
