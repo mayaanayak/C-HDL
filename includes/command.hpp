@@ -15,6 +15,7 @@ enum command{ HELP, SAVE, LOAD, ADD, WIRE, UNWIRE, DELETE, LIST, RUN, UNKNOWN };
 command GetCommand(const string &argument);
 
 void ToNewFile(const string& file_name);
+vector<string> SeparateByDel(const string& line, char del);
 string ConnectionsToString();
 string KeysToString(const map<string, Component*>& kMap);
 string SchematicKeysToString();
