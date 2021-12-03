@@ -38,7 +38,17 @@ command GetCommand(const string &argument) {
     return UNKNOWN;
 }
 
-void ToNewFile(const string& file_name) {
+vector<string> SeparateByDel(const string& line, char del) {
+    vector<string> sep_by_del;
+    stringstream sts(line);
+    string temp;
+    while(std::getline(sts, temp, del)) {
+        sep_by_del.push_back(temp);
+    }
+    return sep_by_del;
+}
+
+void Serialize(const string& file_name) {
     ofstream ofs{file_name};
     ofs << "Registers: " << KeysToString(register_map) << "\n";
     ofs << SchematicKeysToString();
