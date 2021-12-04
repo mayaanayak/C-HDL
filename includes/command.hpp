@@ -14,7 +14,10 @@ enum command{ HELP, SAVE, LOAD, ADD, WIRE, UNWIRE, DELETE, LIST, RUN, UNKNOWN };
 
 command GetCommand(const string &argument);
 
-void ToNewFile(const string& file_name);
+void Serialize(const string& file_name);
+void Deserialize(const string& file);
+vector<string> GetNamesVectorFromLine(const string& line);
+void LineToMap(const string& module, const string& line);
 vector<string> SeparateByDel(const string& line, char del);
 string ConnectionsToString();
 string KeysToString(const map<string, Component*>& kMap);
@@ -25,7 +28,7 @@ bool IsInMap(string& module, string& name);
 bool IsAModule(string& potential_module);
 
 void Add(string& module, string& name);
-void AddToMap(string& module, string& name);
+void AddToMap(const string& module, const string& name);
 
 void Delete(string& module, string& name);
 void DeleteFromMap(string& module, string& name);

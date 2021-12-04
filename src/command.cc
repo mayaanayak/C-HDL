@@ -48,6 +48,27 @@ vector<string> SeparateByDel(const string& line, char del) {
     return sep_by_del;
 }
 
+void Deserialize(const string& file) {
+    vector<string> lines = SeparateByDel(file, '\n');
+    vector<string> corresponding_module = {"register", "and", "nand", "or", "nor", "xor", "not", "monitor"};
+    for (size_t i = 0; i < lines.size(); i++) {
+        LineToMap(corresponding_module.at(i), lines.at(i));
+    }
+}
+
+void LineToMap(const string& module, const string& line) {
+     vector<string> names = GetNamesVectorFromLine(line);
+     for (size_t i = 0; i < names.size(); i++) {
+         AddToMap(module, names.at(i));
+     }
+}
+
+vector<string> GetNamesVectorFromLine(const string& line) {
+    string names = line.substr(line.find(' ') + 1);
+    vector<string> names_vector = SeparateByDel(names, ' ');
+    return names_vector;
+}
+
 void Serialize(const string& file_name) {
     ofstream ofs{file_name};
     ofs << "Registers: " << KeysToString(register_map) << "\n";
@@ -147,7 +168,7 @@ void Add(string& module, string& name) {
     }
 }
 
-void AddToMap(string& module, string& name) {
+void AddToMap(const string& module, const string& name) {
     if (module == "register") {
         auto* to_add = new Register(name);
         register_map[name] = to_add;
