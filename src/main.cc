@@ -40,7 +40,7 @@ int main() {
 
         auto com = GetCommand(arguments[0]);
 
-        switch(com){
+        switch(com) {
             case HELP:
                 cout << helpStringA << helpStringB << endl;
                 break;
