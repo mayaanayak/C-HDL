@@ -7,7 +7,7 @@ exec: bin/exec
 tests: bin/tests
 
 bin/exec: ./src/main.cc ./src/command.cc
-	$(CXX) $(CXXFLAGS) $(CXXEXTRAS) $(INCLUDES) $^ -o $@
+	$(CXX) $(CXXFLAGS) $(CXXEXTRAS) $(INCLUDES) $^ -o bin/exec $@
 
 
 # obj/catch.o: tests/catch.hpp
@@ -18,7 +18,7 @@ bin/exec: ./src/main.cc ./src/command.cc
 
 
 bin/tests: tests/tests.cc src/command.cc
-	$(CXX) $(CXXFLAGS) $(CXXEXTRAS) $(INCLUDES) $^ -o $@
+	$(CXX) $(CXXFLAGS) $(CXXEXTRAS) $(INCLUDES) $^ -o bin/tests $@
 .DEFAULT_GOAL := bin/exec
 .PHONY: clean bin/exec #tests
 
