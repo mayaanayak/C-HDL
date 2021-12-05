@@ -63,7 +63,7 @@ class AndGate : public Component {
     void Evaluate() override {
         if (inputs_.empty()) return;
         evaluate_count_++;
-        if (evaluate_count_ == inputs_.size() - 1) {
+        if (evaluate_count_ == inputs_.size()) {
             state_ = true;
             for (Component* input : inputs_) {
                 if (!input->GetState()) {
@@ -92,7 +92,7 @@ class NandGate : public Component {
     void Evaluate() override {
         if (inputs_.empty()) return;
         evaluate_count_++;
-        if (evaluate_count_ == inputs_.size() - 1) {
+        if (evaluate_count_ == inputs_.size()) {
             state_ = true;
             for (Component* input : inputs_) {
                 if (!input->GetState()) {
@@ -123,7 +123,7 @@ class OrGate : public Component {
     void Evaluate() override {
         if (inputs_.empty()) return;
         evaluate_count_++;
-        if (evaluate_count_ == inputs_.size() - 1) {
+        if (evaluate_count_ == inputs_.size()) {
             state_ = false;
             for (Component* input : inputs_) {
                 if (input->GetState()) {
@@ -151,7 +151,7 @@ class NorGate : public Component {
     void Evaluate() override {
         if (inputs_.empty()) return;
         evaluate_count_++;
-        if (evaluate_count_ == inputs_.size() - 1) {
+        if (evaluate_count_ == inputs_.size()) {
             state_ = false;
             for (Component* input : inputs_) {
                 if (input->GetState()) {
@@ -180,7 +180,7 @@ class XorGate : public Component {
     void Evaluate() override {
         if (inputs_.empty()) return;
         evaluate_count_++;
-        if (evaluate_count_ == inputs_.size() - 1) {
+        if (evaluate_count_ == inputs_.size()) {
             state_ = false;
             for (Component* input : inputs_) {
                 state_ ^= input->GetState();
@@ -205,7 +205,7 @@ class NotGate : public Component {
     void Evaluate() override {
         if (inputs_.empty()) return;
         evaluate_count_++;
-        if (evaluate_count_ == inputs_.size() - 1) {
+        if (evaluate_count_ == inputs_.size()) {
             state_ = !(inputs_[0]->GetState());
             for (size_t i = 0; i < outputs_.size(); i++) {
                 outputs_[i]->Evaluate();
