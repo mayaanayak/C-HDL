@@ -63,7 +63,7 @@ class AndGate : public Component {
     void Evaluate() override {
         if (inputs_.empty()) return;
         evaluate_count_++;
-        if (evaluate_count_ == inputs_.size()) {
+        if (evaluate_count_ == inputs_.size() - 1) {
             state_ = true;
             for (Component* input : inputs_) {
                 if (!input->GetState()) {
