@@ -1,32 +1,18 @@
 #ifndef CATCH_CONFIG_MAIN
 #define CATCH_CONFIG_MAIN
+#endif
 #include "catch.hpp"
 
 #include "../includes/component.hpp"
 #include "../includes/command.hpp"
 
-#include <iostream>
-
-#include <string>
-
-TEST_CASE("Your test case") {
-    std::cout << "hello world" << std::endl;
-    assert(true);
-}
+// TEST_CASE("Your test case") {
+//     std::cout << "hello world" << std::endl;
+//     assert(true);
+// }
 
 // testing component
 TEST_CASE("AndGate") {
-    // Register one("one");
-    // Register two("two");
-    // Register three("three");
-    // Register four("four");
-
-    // AndGate test("test");
-    // test.AttachInput(&one);
-    // test.AttachInput(&two);
-    // test.AttachInput(&three);
-    // test.AttachInput(&four);
-
     SECTION("Two Input") {
         SECTION("True True") {
             Register one("one");
@@ -38,6 +24,8 @@ TEST_CASE("AndGate") {
             AndGate truetrue("truetrue");
             truetrue.AttachInput(&one);
             truetrue.AttachInput(&two);
+
+            truetrue.Evaluate();
 
             REQUIRE(truetrue.GetState() == true);
         }
@@ -53,10 +41,25 @@ TEST_CASE("AndGate") {
             truefalse.AttachInput(&one);
             truefalse.AttachInput(&two);
 
-            REQUIRE(truefalse.GetState() == true);
+            truefalse.Evaluate();
+
+            REQUIRE(truefalse.GetState() == false);
+        }
+
+        SECTION("False False") {
+            Register one("one");
+            Register two("two");
+
+            one.SetState(false);
+            two.SetState(false);
+
+            AndGate truefalse("falsefalse");
+            truefalse.AttachInput(&one);
+            truefalse.AttachInput(&two);
+
+            truefalse.Evaluate();
+
+            REQUIRE(truefalse.GetState() == false);
         }
     }
 }
-
-
-#endif
