@@ -51,6 +51,7 @@ vector<string> SeparateByDel(const string& line, char del) {
 void Deserialize(const string& file) {
     vector<string> lines = SeparateByDel(file, '\n');
     vector<string> corresponding_module = {"register", "and", "nand", "or", "nor", "xor", "not", "monitor"};
+    const size_t kConnectionIndex = corresponding_module.size() - 1;
     for (size_t i = 0; i < lines.size(); i++) {
         LineToMap(corresponding_module.at(i), lines.at(i));
     }
