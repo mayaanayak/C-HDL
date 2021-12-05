@@ -73,7 +73,7 @@ TEST_CASE("OrGate") {
             one.SetState(true);
             two.SetState(true);
 
-            AndGate truetrue("truetrue");
+            OrGate truetrue("truetrue");
             truetrue.AttachInput(&one);
             truetrue.AttachInput(&two);
 
@@ -89,7 +89,7 @@ TEST_CASE("OrGate") {
             one.SetState(true);
             two.SetState(false);
 
-            AndGate truefalse("truefalse");
+            OrGate truefalse("truefalse");
             truefalse.AttachInput(&one);
             truefalse.AttachInput(&two);
 
@@ -105,7 +105,7 @@ TEST_CASE("OrGate") {
             one.SetState(false);
             two.SetState(false);
 
-            AndGate truefalse("falsefalse");
+            OrGate truefalse("falsefalse");
             truefalse.AttachInput(&one);
             truefalse.AttachInput(&two);
 
