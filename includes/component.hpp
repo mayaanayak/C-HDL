@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -20,6 +21,8 @@ class Component {
         if (max_inputs_ == 0 || inputs_.size() < max_inputs_) {
             inputs_.push_back(device);
             device->outputs_.push_back(this);
+        } else{
+            cout << "Maximum input size reached" << endl;
         }
     }
     bool RemoveInput(Component* device){

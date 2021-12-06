@@ -3,6 +3,8 @@
 map<string, Component*> register_map;
 map<string, Component*> schematic_map;
 map<string, Component*> monitor_map;
+string mstr = "monitor";
+string rstr = "register";
 
 command GetCommand(const string &argument) {
     if (!argument.find("help")) { 
@@ -227,7 +229,8 @@ void Add(string& module, string& name) {
        cout << "Second argument should be a module" << endl;
        return;
     }
-    if (!IsInMap(module, name)) {
+    string a;
+    if (!(IsInMap(mstr, name) || IsInMap(rstr, name) || IsInMap(a, name))) {
         AddToMap(module, name);
     } else{
         cout << "Module \"" << name << "\" already exists" << endl;
@@ -262,12 +265,16 @@ void AddToMap(const string& module, const string& name) {
     schematic_map[name] = to_add;
 }
 
-void Delete(string& module, string& name) {
-    if (!IsAModule(module)) {
-        cout << "Second argument should be a module" << endl;
-    }
-    if (IsInMap(module, name)) {
-        DeleteFromMap(module, name);
+void Delete(string& name) {
+    string a;
+    if (IsInMap(mstr, name)) {
+        DeleteFromMap(mstr, name);
+        cout << "Deleted \"" << name << "\"" << endl;
+    } else if(IsInMap(rstr, name)){
+        DeleteFromMap(rstr, name);
+        cout << "Deleted \"" << name << "\"" << endl;
+    } else if (IsInMap(a, name)){
+        DeleteFromMap(a, name);
         cout << "Deleted \"" << name << "\"" << endl;
     } else{
         cout << "Module \"" << name << "\" does not exist" << endl;
@@ -285,15 +292,13 @@ void DeleteFromMap(string& module, string& name) {
 }
 
 void Wire(string& from, string& to) {
-    string m = "monitor";
-    string r = "register";
     Component* fromptr = nullptr;
     Component* toptr = nullptr;
-    if (IsInMap(m, from)) {
+    if (IsInMap(mstr, from)) {
         cout << "Can't connect monitors to other modules" << endl;
         return;
     } 
-    if (IsInMap(r,from)) {
+    if (IsInMap(rstr,from)) {
         fromptr = register_map.find(from)->second;
     } else {
         auto it = schematic_map.find(from);
@@ -303,11 +308,11 @@ void Wire(string& from, string& to) {
         }
         fromptr = it->second;
     }
-    if (IsInMap(r, to)) {
+    if (IsInMap(rstr, to)) {
         cout << "Can't connect other modules to registers" << endl;
         return;
     }
-    if (IsInMap(m, to)) {
+    if (IsInMap(mstr, to)) {
         toptr = monitor_map.find(to)->second;
     } else {
         auto it = schematic_map.find(to);
@@ -326,15 +331,13 @@ void Wire(string& from, string& to) {
 }
 
 void Unwire(string& from, string& to) {
-    string m = "monitor";
-    string r = "register";
     Component* fromptr = nullptr;
     Component* toptr = nullptr;
-    if (IsInMap(m, from)){
+    if (IsInMap(mstr, from)){
         cout << "Wire shouldn't exist" << endl;
         return;
     } 
-    if (IsInMap(r,from)) {
+    if (IsInMap(rstr,from)) {
         fromptr = register_map.find(from)->second;
     } else {
         auto it = schematic_map.find(from);
@@ -344,11 +347,11 @@ void Unwire(string& from, string& to) {
         }
         fromptr = it->second;
     }
-    if (IsInMap(r, to)) {
+    if (IsInMap(rstr, to)) {
         cout << "Wire shouldn't exist" << endl;
         return;
     }
-    if (IsInMap(m, to)) {
+    if (IsInMap(mstr, to)) {
         toptr = monitor_map.find(to)->second;
     } else {
         auto it = schematic_map.find(to);

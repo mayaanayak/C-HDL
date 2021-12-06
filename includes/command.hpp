@@ -33,7 +33,7 @@ bool IsAModule(string& potential_module);
 void Add(string& module, string& name);
 void AddToMap(const string& module, const string& name);
 
-void Delete(string& module, string& name);
+void Delete(string& name);
 void DeleteFromMap(string& module, string& name);
 
 void Wire(string& from, string& to);

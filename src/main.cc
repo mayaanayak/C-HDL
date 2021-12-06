@@ -8,7 +8,7 @@ using namespace std;
 static string progTitle = "  _____  __    __    __ _____  __ \n / ___/_/ /___/ /_  / // / _ \\/ / \n/ /__/_  __/_  __/ / _  / // / /__\n\\___/ /_/   /_/   /_//_/____/____/";
 static string helpStringA = "help - prints this\nexit - terminates program\nsave <filename> - saves schematic to local directory\nload <filename> - loads schematic from local directory (clears any unsaved work!)";
 static string helpStringB = 
-"\n\nadd <module> <name> - adds a module with the given name\ndelete <module> <name> - removes a module with the given name\nwire <src> <dest> - connects source module to destination module\nunwire <src> <dest> - removes connection from source module to destination module, if one exists\nlist [registers/modules/monitors/all] - lists the created modules"
+"\n\nadd <module> <name> - adds a module with the given name\ndelete <name> - removes a module with the given name\nwire <src> <dest> - connects source module to destination module\nunwire <src> <dest> - removes connection from source module to destination module, if one exists\nlist [registers/modules/monitors/all] - lists the created modules"
 "\nrun <register> <state> (...) - assign each register a 0/1 value and simulate the circuit\nclear - clears all active registers.";
 
 int main() {
@@ -48,15 +48,15 @@ int main() {
                 break;
             }
             case DELETE:
-                if (arguments.size()<3) {
-                    cout << "Missing Module type or Name" << endl;
+                if (arguments.size()<2) {
+                    cout << "Missing Module Name" << endl;
                     break;
                 }
-                Delete(arguments[1],arguments[2]);
+                Delete(arguments[1]);
                 break;
             case WIRE:
                 if (arguments.size()<3) {
-                    cout << "Missing module names" << endl;
+                    cout << "Missing Module Names" << endl;
                     break;
                 }
                 Wire(arguments[1], arguments[2]);
@@ -73,14 +73,14 @@ int main() {
                 break;
             case SAVE:
                 if (arguments.size()<2){
-                    cout << "Missing file name" << endl;
+                    cout << "Missing File Name" << endl;
                     break;
                 }
                 Serialize(arguments[1]);
                 break;
             case LOAD:
                 if (arguments.size()<2){
-                    cout << "Missing file name" << endl;
+                    cout << "Missing File Name" << endl;
                     break;
                 }
                 clearMaps();
