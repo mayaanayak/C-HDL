@@ -12,7 +12,7 @@ bin/exec: src/main.cc src/command.cc
 
 bin/tests: tests/tests.cc src/command.cc
 	mkdir -p bin
-	${CXX} ${CXXFLAGS} ${CXXEXTRAS} ${INCLUDES} $^ -o $@
+	${CXX} ${CXXFLAGS} ${CXXEXTRAS}  ${INCLUDES} $^ -o $@
 	
 .DEFAULT_GOAL := exec
 .PHONY: clean exec tests

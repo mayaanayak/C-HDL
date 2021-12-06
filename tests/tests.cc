@@ -22,9 +22,10 @@ TEST_CASE("AndGate") {
 
             AndGate truetrue("truetrue");
             truetrue.AttachInput(&one);
-            truetrue.AttachInput(&two);
+            truetrue.AttachInput(&two); 
 
-            truetrue.Evaluate();
+            one.Evaluate();
+            two.Evaluate();
 
             REQUIRE(truetrue.GetState() == true);
         }
@@ -40,7 +41,8 @@ TEST_CASE("AndGate") {
             truefalse.AttachInput(&one);
             truefalse.AttachInput(&two);
 
-            truefalse.Evaluate();
+            one.Evaluate();
+            two.Evaluate();
 
             REQUIRE_FALSE(truefalse.GetState());
         }
@@ -56,7 +58,8 @@ TEST_CASE("AndGate") {
             falsefalse.AttachInput(&one);
             falsefalse.AttachInput(&two);
 
-            falsefalse.Evaluate();
+            one.Evaluate();
+            two.Evaluate();
 
             REQUIRE_FALSE(falsefalse.GetState());
         }
@@ -73,11 +76,12 @@ TEST_CASE("NandGate") {
             one.SetState(true);
             two.SetState(true);
 
-            AndGate truetrue("truetrue");
+            NandGate truetrue("truetrue");
             truetrue.AttachInput(&one);
             truetrue.AttachInput(&two);
 
-            truetrue.Evaluate();
+            one.Evaluate();
+            two.Evaluate();
 
             REQUIRE_FALSE(truetrue.GetState());
         }
@@ -89,11 +93,12 @@ TEST_CASE("NandGate") {
             one.SetState(true);
             two.SetState(false);
 
-            AndGate truefalse("truefalse");
+            NandGate truefalse("truefalse");
             truefalse.AttachInput(&one);
             truefalse.AttachInput(&two);
 
-            truefalse.Evaluate();
+            one.Evaluate();
+            two.Evaluate();
 
             REQUIRE(truefalse.GetState());
         }
@@ -105,11 +110,12 @@ TEST_CASE("NandGate") {
             one.SetState(false);
             two.SetState(false);
 
-            AndGate truefalse("falsefalse");
+            NandGate truefalse("falsefalse");
             truefalse.AttachInput(&one);
             truefalse.AttachInput(&two);
 
-            truefalse.Evaluate();
+            one.Evaluate();
+            two.Evaluate();
 
             REQUIRE(truefalse.GetState());
         }
@@ -131,7 +137,8 @@ TEST_CASE("OrGate") {
             truetrue.AttachInput(&one);
             truetrue.AttachInput(&two);
 
-            truetrue.Evaluate();
+            one.Evaluate();
+            two.Evaluate();
 
             REQUIRE(truetrue.GetState());
         }
@@ -147,7 +154,8 @@ TEST_CASE("OrGate") {
             truefalse.AttachInput(&one);
             truefalse.AttachInput(&two);
 
-            truefalse.Evaluate();
+            one.Evaluate();
+            two.Evaluate();
 
             REQUIRE(truefalse.GetState());
         }
@@ -163,7 +171,8 @@ TEST_CASE("OrGate") {
             falsefalse.AttachInput(&one);
             falsefalse.AttachInput(&two);
 
-            falsefalse.Evaluate();
+            one.Evaluate();
+            two.Evaluate();
 
             REQUIRE_FALSE(falsefalse.GetState());
         }
@@ -180,11 +189,12 @@ TEST_CASE("NorGate") {
             one.SetState(true);
             two.SetState(true);
 
-            OrGate truetrue("truetrue");
+            NorGate truetrue("truetrue");
             truetrue.AttachInput(&one);
             truetrue.AttachInput(&two);
 
-            truetrue.Evaluate();
+            one.Evaluate();
+            two.Evaluate();
 
             REQUIRE_FALSE(truetrue.GetState());
         }
@@ -196,11 +206,12 @@ TEST_CASE("NorGate") {
             one.SetState(true);
             two.SetState(false);
 
-            OrGate truefalse("truefalse");
+            NorGate truefalse("truefalse");
             truefalse.AttachInput(&one);
             truefalse.AttachInput(&two);
 
-            truefalse.Evaluate();
+            one.Evaluate();
+            two.Evaluate();
 
             REQUIRE_FALSE(truefalse.GetState());
         }
@@ -212,14 +223,101 @@ TEST_CASE("NorGate") {
             one.SetState(false);
             two.SetState(false);
 
-            OrGate falsefalse("falsefalse");
+            NorGate falsefalse("falsefalse");
             falsefalse.AttachInput(&one);
             falsefalse.AttachInput(&two);
 
-            falsefalse.Evaluate();
+            one.Evaluate();
+            two.Evaluate();
 
             REQUIRE(falsefalse.GetState());
         }
     }
 }
 
+// XorGate
+TEST_CASE("XorGate") {
+    SECTION("Two Input") {
+        SECTION("True True") {
+            Register one("one");
+            Register two("two");
+
+            one.SetState(true);
+            two.SetState(true);
+
+            XorGate truetrue("truetrue");
+            truetrue.AttachInput(&one);
+            truetrue.AttachInput(&two);
+
+            one.Evaluate();
+            two.Evaluate();
+
+            REQUIRE_FALSE(truetrue.GetState());
+        }
+
+        SECTION("True False") {
+            Register one("one");
+            Register two("two");
+
+            one.SetState(true);
+            two.SetState(false);
+
+            XorGate truefalse("truefalse");
+            truefalse.AttachInput(&one);
+            truefalse.AttachInput(&two);
+
+            one.Evaluate();
+            two.Evaluate();
+
+            REQUIRE(truefalse.GetState());
+        }
+
+        SECTION("False False") {
+            Register one("one");
+            Register two("two");
+
+            one.SetState(false);
+            two.SetState(false);
+
+            XorGate falsefalse("falsefalse");
+            falsefalse.AttachInput(&one);
+            falsefalse.AttachInput(&two);
+
+            one.Evaluate();
+            two.Evaluate();
+
+            REQUIRE_FALSE(falsefalse.GetState());
+        }
+    }
+}
+
+// NotGate
+TEST_CASE("NotGate") {
+    SECTION("One Input") {
+        SECTION("True") {
+            Register one("one");
+
+            one.SetState(true);
+
+            NotGate truetrue("truetrue");
+            truetrue.AttachInput(&one);
+
+            one.Evaluate();
+
+            REQUIRE_FALSE(truetrue.GetState());
+        }
+
+        SECTION("False") {
+            Register one("one");
+
+            one.SetState(false);
+
+            NotGate falsefalse("falsefalse");
+            falsefalse.AttachInput(&one);
+
+            one.Evaluate();
+
+            REQUIRE(falsefalse.GetState());
+        }    
+    }
+}
