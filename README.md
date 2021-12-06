@@ -7,6 +7,10 @@ Do
 $ git clone https://github.com/cs128-2021c/final-project-templating-is-turing-complete
 ```
 to get a copy of the repository. 
+
+## Description
+Our project is a CLI wiring and simulator for logical circuits. Users can send commands to create and wire components, simulate using sets of inputs, and save and load schematics.
+
 ## Building and Running the CLI program
 
 Run the following commands:
@@ -56,7 +60,7 @@ Logic Gates - Dynamic input size modules that perform their logical operation on
 > delete <name>
 ```
 
-`wire` and `unwrite` will create and remove a connection from `<name_one>` to `<name_two>`. Registers cannot have inputs, and monitors cannot have outputs. It also forbids the same module attaching itself multiple times to another module.
+`wire` and `unwire` will create and remove a connection from `<name_one>` to `<name_two>`. Registers cannot have inputs, and monitors cannot have outputs. It also forbids the same module attaching itself multiple times to another module.
 
 ```
 > wire <name_one> <name_two>
