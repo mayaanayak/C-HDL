@@ -60,7 +60,7 @@ Logic Gates - Dynamic input size modules that perform their logical operation on
 > delete <name>
 ```
 
-`wire` and `unwrite` will create and remove a connection from `<name_one>` to `<name_two>`. Registers cannot have inputs, and monitors cannot have outputs. It also forbids the same module attaching itself multiple times to another module.
+`wire` and `unwire` will create and remove a connection from `<name_one>` to `<name_two>`. Registers cannot have inputs, and monitors cannot have outputs. It also forbids the same module attaching itself multiple times to another module.
 
 ```
 > wire <name_one> <name_two>
