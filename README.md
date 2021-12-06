@@ -41,6 +41,7 @@ C++HDL supports feed-forward wiring and simulation. Feedback schematics are not 
 ```
 
 A schematic has three major module types:
+
 `register` - The working schematic's input wires. These modules have their states set to user input on simulation.
 
 `monitor` - The working schematic's output wires. These modules' state will be displayed on completion of emulation.
