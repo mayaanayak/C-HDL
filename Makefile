@@ -7,9 +7,11 @@ exec: bin/exec
 tests: bin/tests
 
 bin/exec: src/main.cc src/command.cc
+	mkdir -p bin
 	${CXX} ${CXXFLAGS} ${CXXEXTRAS} ${INCLUDES} $^ -o $@
 
 bin/tests: tests/tests.cc src/command.cc
+	mkdir -p bin
 	${CXX} ${CXXFLAGS} ${CXXEXTRAS} ${INCLUDES} $^ -o $@
 	
 .DEFAULT_GOAL := exec

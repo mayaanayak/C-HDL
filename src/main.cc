@@ -12,18 +12,6 @@ static string helpStringB = "\n\nadd <module> <name> - adds a module with the gi
 int main() {
     cout << progTitle << endl << endl;
     cout << "Type 'help' for a list of commands. Type 'exit' to quit." << endl;
-
-    // Register x1("x1");
-    // Register x2("x2");
-    // AndGate a1("a1");
-    // x1.SetState(true);
-    // x2.SetState(true);
-    // a1.AttachInput(&x1);
-    // a1.AttachInput(&x1);
-    // cout << a1.GetState() << endl;
-    // x1.Evaluate();
-    // x2.Evaluate();
-    // cout << a1.GetState() << endl;
     
     //Handle autoload schematic
 
