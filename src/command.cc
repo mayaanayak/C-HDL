@@ -9,6 +9,7 @@ command GetCommand(const string &argument) {
         return HELP;
     }
     if (!argument.find("exit")) {
+        clearMaps();
         exit(0);
     }
     if (!argument.find("load")) {
@@ -35,19 +36,46 @@ command GetCommand(const string &argument) {
     if (!argument.find("run")){
         return RUN;
     }
+    if (!argument.find("clear")){
+        return CLEAR;
+    }
     return UNKNOWN;
+}
+
+void clearMaps(){
+    for (auto it = register_map.begin(); it!=register_map.end();){
+        Component* c = it->second;
+        it = register_map.erase(it);
+        delete c;
+    }
+    for (auto it = schematic_map.begin(); it!=schematic_map.end();){
+        Component* c = it->second;
+        it = schematic_map.erase(it);
+        delete c;
+    }
+    for (auto it = monitor_map.begin(); it!=monitor_map.end();){
+        Component* c = it->second;
+        it = monitor_map.erase(it);
+        delete c;
+    }
 }
 
 vector<string> SeparateByDel(const string& line) {
     vector<string> sep_by_del;
     ifstream fd;
     fd.open(line);
-    string temp;
-    while(std::getline(fd, temp)) {
-        sep_by_del.push_back(temp);
+    if (fd.is_open()){
+        string temp;
+        while(std::getline(fd, temp)) {
+            sep_by_del.push_back(temp);
+        }
+        
+    } else{
+        cout << "File does not exist." << endl;
     }
     return sep_by_del;
-}
+} 
+
 
 vector<string> GetFullVectorFromLine(const string& line) {
     string names=line;
@@ -79,6 +107,7 @@ void AttachListInput(const string& line){
 
 void Deserialize(const string& file) {
     vector<string> lines = SeparateByDel(file);
+    if (lines.empty()) return;
     vector<string> corresponding_module = {"register", "and", "nand", "or", "nor", "xor", "not", "monitor"};
     for (size_t i = 0; i < 8; i++) {
         LineToMap(corresponding_module.at(i), lines.at(i));
@@ -288,6 +317,11 @@ void Wire(string& from, string& to) {
         }
         toptr = it->second;
     }
+    auto inputVec = toptr->GetInputs();
+    if (find(inputVec.begin(), inputVec.end(), fromptr)!=inputVec.end()){
+        cout << "Wire already exists" << endl;
+        return;
+    }
     toptr->AttachInput(fromptr);
 }
 
@@ -362,16 +396,25 @@ void List(string& module_type) {
 }
 
 void Simulate(vector<string>& args) {
-    if (args.size() % 2 == 0){
-        cout << "Missing states" << endl;
+    if (args.size() < 1+2*register_map.size()){
+        cout << "Missing states or register inputs" << endl;
         return;
+    }
+    if (args.size() > 1+2*register_map.size()){
+        cout << "Too many states or register inputs" << endl;
     }
     for (auto reg : register_map) {
         ((Register*)reg.second)->SetState(false);
     }
     for (size_t i = 1; i < args.size(); i += 2) {
         auto reg = register_map.find(args[i]);
-        bool x = stoi(args[i + 1]);
+        bool x = false;
+        try{
+            x = stoi(args[i + 1]);
+        } catch(...){
+            cout << "Invalid state input" << endl;
+            return;
+        }
         ((Register*)reg->second)->SetState(x);
     }
     for (auto reg : register_map) {

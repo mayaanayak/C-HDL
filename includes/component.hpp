@@ -41,6 +41,7 @@ class Component {
     string& GetName(){
         return name_;
     }
+    virtual ~Component() = default;
     protected:
     vector<Component*> inputs_;
     vector<Component*> outputs_;

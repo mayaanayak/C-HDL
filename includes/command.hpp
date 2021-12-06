@@ -9,11 +9,12 @@
 
 using namespace std;
 
-enum command{ HELP, SAVE, LOAD, ADD, WIRE, UNWIRE, DELETE, LIST, RUN, UNKNOWN };
+enum command{ HELP, SAVE, LOAD, ADD, WIRE, UNWIRE, DELETE, LIST, RUN, CLEAR, UNKNOWN };
 //and, or, not, nor, nand, xor, register, monitor
 
 command GetCommand(const string &argument);
 
+void clearMaps();
 void Serialize(const string& file_name);
 void Deserialize(const string& file);
 vector<string> GetNamesVectorFromLine(const string& line);

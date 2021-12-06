@@ -7,7 +7,9 @@ using namespace std;
 
 static string progTitle = "  _____  __    __    __ _____  __ \n / ___/_/ /___/ /_  / // / _ \\/ / \n/ /__/_  __/_  __/ / _  / // / /__\n\\___/ /_/   /_/   /_//_/____/____/";
 static string helpStringA = "help - prints this\nexit - terminates program\nsave <filename> - saves schematic to local directory\nload <filename> - loads schematic from local directory (clears any unsaved work!)";
-static string helpStringB = "\n\nadd <module> <name> - adds a module with the given name\ndelete <module> <name> - removes a module with the given name\nwire <src> <dest> - connects source module to destination module\nunwire <src> <dest> - removes connection from source module to destination module, if one exists\nlist [registers/modules/monitors/all] - lists the created modules";
+static string helpStringB = 
+"\n\nadd <module> <name> - adds a module with the given name\ndelete <module> <name> - removes a module with the given name\nwire <src> <dest> - connects source module to destination module\nunwire <src> <dest> - removes connection from source module to destination module, if one exists\nlist [registers/modules/monitors/all] - lists the created modules"
+"\nrun <register> <state> (...) - assign each register a 0/1 value and simulate the circuit\nclear - clears all active registers.";
 
 int main() {
     cout << progTitle << endl << endl;
@@ -61,7 +63,7 @@ int main() {
                 break;
             case UNWIRE:
                 if (arguments.size()<3) {
-                    cout << "missing module names" << endl;
+                    cout << "Missing module names" << endl;
                     break;
                 }
                 Unwire(arguments[1], arguments[2]);
@@ -70,10 +72,22 @@ int main() {
                 Simulate(arguments);
                 break;
             case SAVE:
+                if (arguments.size()<2){
+                    cout << "Missing file name" << endl;
+                    break;
+                }
                 Serialize(arguments[1]);
                 break;
             case LOAD:
+                if (arguments.size()<2){
+                    cout << "Missing file name" << endl;
+                    break;
+                }
+                clearMaps();
                 Deserialize(arguments[1]);
+                break;
+            case CLEAR:
+                clearMaps();
                 break;
             case UNKNOWN:
                 cout << "Unknown Command." << endl;
