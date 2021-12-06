@@ -69,6 +69,12 @@ int main() {
             case RUN:
                 Simulate(arguments);
                 break;
+            case SAVE:
+                Serialize(arguments[1]);
+                break;
+            case LOAD:
+                Deserialize(arguments[1]);
+                break;
             case UNKNOWN:
                 cout << "Unknown Command." << endl;
                 break;

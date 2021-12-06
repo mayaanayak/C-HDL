@@ -38,21 +38,53 @@ command GetCommand(const string &argument) {
     return UNKNOWN;
 }
 
-vector<string> SeparateByDel(const string& line, char del) {
+vector<string> SeparateByDel(const string& line) {
     vector<string> sep_by_del;
-    stringstream sts(line);
+    ifstream fd;
+    fd.open(line);
     string temp;
-    while(std::getline(sts, temp, del)) {
+    while(std::getline(fd, temp)) {
         sep_by_del.push_back(temp);
     }
     return sep_by_del;
 }
 
+vector<string> GetFullVectorFromLine(const string& line) {
+    string names=line;
+    stringstream ssname(names);
+    string t;
+    vector<string> names_vector;
+    while (ssname>>t){
+        names_vector.push_back(t);
+    }
+    return names_vector;
+}
+
+void AttachListInput(const string& line){
+    vector<string> list = GetFullVectorFromLine(line);
+    for (size_t i=1;i<list.size();i++){
+        auto smap = schematic_map.find(list[0]);
+        if (smap==schematic_map.end()){
+            smap = monitor_map.find(list[0]);
+        }
+        auto tmap = schematic_map.find(list[i]);
+        if (tmap==schematic_map.end()){
+            tmap = register_map.find(list[i]);
+        }
+        Component* c1 = smap->second;
+        Component* c2 = tmap->second;
+        c1->AttachInput(c2);
+    }
+}
+
 void Deserialize(const string& file) {
-    vector<string> lines = SeparateByDel(file, '\n');
+    vector<string> lines = SeparateByDel(file);
     vector<string> corresponding_module = {"register", "and", "nand", "or", "nor", "xor", "not", "monitor"};
-    for (size_t i = 0; i < lines.size(); i++) {
+    for (size_t i = 0; i < 8; i++) {
         LineToMap(corresponding_module.at(i), lines.at(i));
+    }
+    for (size_t i = 8; i<lines.size();i++){
+        AttachListInput(lines.at(i));
     }
 }
 
@@ -65,22 +97,27 @@ void LineToMap(const string& module, const string& line) {
 
 vector<string> GetNamesVectorFromLine(const string& line) {
     string names = line.substr(line.find(' ') + 1);
-    vector<string> names_vector = SeparateByDel(names, ' ');
+    stringstream ssname(names);
+    string t;
+    vector<string> names_vector;
+    while (ssname>>t){
+        names_vector.push_back(t);
+    }
     return names_vector;
 }
 
 void Serialize(const string& file_name) {
     ofstream ofs{file_name};
-    ofs << "Registers: " << KeysToString(register_map) << "\n";
+    ofs << "Registers " << KeysToString(register_map) << "\n";
     ofs << SchematicKeysToString();
-    ofs << "Monitors: " << KeysToString(monitor_map) << "\n";
+    ofs << "Monitors " << KeysToString(monitor_map) << "\n";
     ofs << ConnectionsToString();
 }
 
 string ConnectionsToString() {
     string connection_string;
     for (auto const& component : schematic_map) {
-        connection_string += component.second->GetName() + ": ";
+        connection_string += component.second->GetName() + " ";
         vector<Component*> inputs = component.second->GetInputs();
         for (auto const& component : inputs) {
             connection_string += component->GetName() + " ";
@@ -88,7 +125,7 @@ string ConnectionsToString() {
         connection_string += "\n";
     }
     for (auto const& component : monitor_map) {
-        connection_string += component.second->GetName() + ": ";
+        connection_string += component.second->GetName() + " ";
         vector<Component*> inputs = component.second->GetInputs();
         for (auto const& component : inputs) {
             connection_string += component->GetName() + " ";
@@ -126,12 +163,12 @@ string SchematicKeysToString() {
             not_names.push_back(component.first);
         }
     }
-    schematic_string += "And: " + PrintVector(and_names) + "\n";
-    schematic_string += "Nand: " + PrintVector(nand_names) + "\n";
-    schematic_string += "Or: " + PrintVector(or_names) + "\n";
-    schematic_string += "Nor: " + PrintVector(nor_names) + "\n";
-    schematic_string += "Xor: " + PrintVector(xor_names) + "\n";
-    schematic_string += "Not: " + PrintVector(not_names) + "\n";
+    schematic_string += "And " + PrintVector(and_names) + "\n";
+    schematic_string += "Nand " + PrintVector(nand_names) + "\n";
+    schematic_string += "Or " + PrintVector(or_names) + "\n";
+    schematic_string += "Nor " + PrintVector(nor_names) + "\n";
+    schematic_string += "Xor " + PrintVector(xor_names) + "\n";
+    schematic_string += "Not " + PrintVector(not_names) + "\n";
     return schematic_string;
 }
 
