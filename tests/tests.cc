@@ -517,6 +517,176 @@ TEST_CASE("OrGate") {
             REQUIRE_FALSE(falsefalse.GetState());
         }
     }
+
+    SECTION("Multiple Input") {
+        SECTION("ttt") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(true);
+            two.SetState(true);
+            three.SetState(true);
+
+            OrGate ttt("ttt");
+            ttt.AttachInput(&one);
+            ttt.AttachInput(&two);
+            ttt.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE(ttt.GetState());
+        }
+
+        SECTION("fff") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(false);
+            two.SetState(false);
+            three.SetState(false);
+
+            OrGate fff("fff");
+            fff.AttachInput(&one);
+            fff.AttachInput(&two);
+            fff.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE_FALSE(fff.GetState());
+        }
+
+        SECTION("tft") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(true);
+            two.SetState(false);
+            three.SetState(true);
+
+            OrGate tft("tft");
+            tft.AttachInput(&one);
+            tft.AttachInput(&two);
+            tft.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE(tft.GetState());
+        }
+
+        SECTION("ftf") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(false);
+            two.SetState(true);
+            three.SetState(false);
+
+            OrGate ftf("ftf");
+            ftf.AttachInput(&one);
+            ftf.AttachInput(&two);
+            ftf.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE(ftf.GetState());
+        }
+
+        SECTION("tff") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(true);
+            two.SetState(false);
+            three.SetState(false);
+
+            OrGate tff("tff");
+            tff.AttachInput(&one);
+            tff.AttachInput(&two);
+            tff.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE(tff.GetState());
+        }
+
+        SECTION("ftt") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(false);
+            two.SetState(true);
+            three.SetState(true);
+
+            OrGate ftt("ftt");
+            ftt.AttachInput(&one);
+            ftt.AttachInput(&two);
+            ftt.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE(ftt.GetState());
+        }
+
+        SECTION("ttf") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(true);
+            two.SetState(true);
+            three.SetState(false);
+
+            OrGate ttf("ttf");
+            ttf.AttachInput(&one);
+            ttf.AttachInput(&two);
+            ttf.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE(ttf.GetState());
+        }
+
+        SECTION("fft") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(false);
+            two.SetState(false);
+            three.SetState(true);
+
+            OrGate fft("fft");
+            fft.AttachInput(&one);
+            fft.AttachInput(&two);
+            fft.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE(fft.GetState());
+        }
+    }
 }
 
 // NorGate
@@ -573,6 +743,176 @@ TEST_CASE("NorGate") {
             REQUIRE(falsefalse.GetState());
         }
     }
+
+    SECTION("Multiple Input") {
+        SECTION("ttt") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(true);
+            two.SetState(true);
+            three.SetState(true);
+
+            NorGate ttt("ttt");
+            ttt.AttachInput(&one);
+            ttt.AttachInput(&two);
+            ttt.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE_FALSE(ttt.GetState());
+        }
+
+        SECTION("fff") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(false);
+            two.SetState(false);
+            three.SetState(false);
+
+            NorGate fff("fff");
+            fff.AttachInput(&one);
+            fff.AttachInput(&two);
+            fff.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE(fff.GetState());
+        }
+
+        SECTION("tft") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(true);
+            two.SetState(false);
+            three.SetState(true);
+
+            NorGate tft("tft");
+            tft.AttachInput(&one);
+            tft.AttachInput(&two);
+            tft.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE_FALSE(tft.GetState());
+        }
+
+        SECTION("ftf") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(false);
+            two.SetState(true);
+            three.SetState(false);
+
+            NorGate ftf("ftf");
+            ftf.AttachInput(&one);
+            ftf.AttachInput(&two);
+            ftf.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE_FALSE(ftf.GetState());
+        }
+
+        SECTION("tff") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(true);
+            two.SetState(false);
+            three.SetState(false);
+
+            NorGate tff("tff");
+            tff.AttachInput(&one);
+            tff.AttachInput(&two);
+            tff.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE_FALSE(tff.GetState());
+        }
+
+        SECTION("ftt") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(false);
+            two.SetState(true);
+            three.SetState(true);
+
+            NorGate ftt("ftt");
+            ftt.AttachInput(&one);
+            ftt.AttachInput(&two);
+            ftt.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE_FALSE(ftt.GetState());
+        }
+
+        SECTION("ttf") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(true);
+            two.SetState(true);
+            three.SetState(false);
+
+            NorGate ttf("ttf");
+            ttf.AttachInput(&one);
+            ttf.AttachInput(&two);
+            ttf.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE_FALSE(ttf.GetState());
+        }
+
+        SECTION("fft") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(false);
+            two.SetState(false);
+            three.SetState(true);
+
+            NorGate fft("fft");
+            fft.AttachInput(&one);
+            fft.AttachInput(&two);
+            fft.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE_FALSE(fft.GetState());
+        }
+    }
 }
 
 // XorGate
@@ -627,6 +967,176 @@ TEST_CASE("XorGate") {
             two.Evaluate();
 
             REQUIRE_FALSE(falsefalse.GetState());
+        }
+    }
+
+    SECTION("Multiple Input") {
+        SECTION("ttt") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(true);
+            two.SetState(true);
+            three.SetState(true);
+
+            XorGate ttt("ttt");
+            ttt.AttachInput(&one);
+            ttt.AttachInput(&two);
+            ttt.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE(ttt.GetState());
+        }
+
+        SECTION("fff") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(false);
+            two.SetState(false);
+            three.SetState(false);
+
+            XorGate fff("fff");
+            fff.AttachInput(&one);
+            fff.AttachInput(&two);
+            fff.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE_FALSE(fff.GetState());
+        }
+
+        SECTION("tft") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(true);
+            two.SetState(false);
+            three.SetState(true);
+
+            XorGate tft("tft");
+            tft.AttachInput(&one);
+            tft.AttachInput(&two);
+            tft.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE_FALSE(tft.GetState());
+        }
+
+        SECTION("ftf") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(false);
+            two.SetState(true);
+            three.SetState(false);
+
+            XorGate ftf("ftf");
+            ftf.AttachInput(&one);
+            ftf.AttachInput(&two);
+            ftf.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE(ftf.GetState());
+        }
+
+        SECTION("tff") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(true);
+            two.SetState(false);
+            three.SetState(false);
+
+            XorGate tff("tff");
+            tff.AttachInput(&one);
+            tff.AttachInput(&two);
+            tff.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE(tff.GetState());
+        }
+
+        SECTION("ftt") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(false);
+            two.SetState(true);
+            three.SetState(true);
+
+            XorGate ftt("ftt");
+            ftt.AttachInput(&one);
+            ftt.AttachInput(&two);
+            ftt.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE_FALSE(ftt.GetState());
+        }
+
+        SECTION("ttf") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(true);
+            two.SetState(true);
+            three.SetState(false);
+
+            XorGate ttf("ttf");
+            ttf.AttachInput(&one);
+            ttf.AttachInput(&two);
+            ttf.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE_FALSE(ttf.GetState());
+        }
+
+        SECTION("fft") {
+            Register one("one");
+            Register two("two");
+            Register three("three");
+
+            one.SetState(false);
+            two.SetState(false);
+            three.SetState(true);
+
+            XorGate fft("fft");
+            fft.AttachInput(&one);
+            fft.AttachInput(&two);
+            fft.AttachInput(&three);
+
+            one.Evaluate();
+            two.Evaluate();
+            three.Evaluate();
+
+            REQUIRE(fft.GetState());
         }
     }
 }
