@@ -9,7 +9,7 @@ $ git clone https://github.com/cs128-2021c/final-project-templating-is-turing-co
 to get a copy of the repository. 
 
 ## Description
-Our project is a CLI wiring and simulator for logical circuits. Users can send commands to create and wire components, simulate using sets of inputs, and save and load schematics.
+Our project is a CLI wiring and simulator for logical circuits. Users can send commands to create and wire components, simulate using sets of inputs, save and load schematics, output a table of current components, and simulate an active schematic with a given input.
 
 ## Building and Running the CLI program
 
