@@ -1,4 +1,4 @@
-# CS128 Final Project - C++HDL
+# C++HDL
 **Created by Sam Ruggerio, Maya Nayak, and Nicholas Park**
 
 Do
